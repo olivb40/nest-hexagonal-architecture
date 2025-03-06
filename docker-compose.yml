@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+    environment:
+      # Ces variables seront utilisées dans la configuration de TypeORM dans votre app (exemple avec process.env)
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=your_username
+      - DB_PASSWORD=your_password
+      - DB_DATABASE=your_database
+    volumes:
+      - ./:/app # Monte votre répertoire courant dans /app dans le conteneur
+    command: npm run start:dev
+    restart: always
+
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: your_username
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: your_database
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgres_data:
