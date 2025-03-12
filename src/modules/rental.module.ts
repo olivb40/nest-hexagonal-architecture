@@ -1,13 +1,8 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../infrastructure/database.module';
-import { RentalController } from '../adapters/controllers/rental.controller';
-import { RentalService } from '../application/services/rental.service';
-import { RentalCalculationService } from '../domain/services/rental-calculation.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { RentalEntity } from 'src/infrastructure/entities/rental.entity.orm';
 
 @Module({
-  imports: [DatabaseModule],
-  controllers: [RentalController],
-  providers: [RentalService, RentalCalculationService],
-  exports: [RentalService],
+  imports: [TypeOrmModule.forFeature([RentalEntity])],
 })
 export class RentalModule {}
