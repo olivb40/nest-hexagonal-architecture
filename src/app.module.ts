@@ -1,29 +1,28 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatabaseModule } from './infrastructure/database.module';
-import { RentalController } from './adapters/controllers/rental.controller';
-import { RentalService } from './application/services/rental.service';
-// Importez ici les entités ORM pour la configuration de TypeORM
-import { ClientOrmEntity } from './infrastructure/orm/client.orm-entity';
-import { CarOrmEntity } from './infrastructure/orm/car.orm-entity';
-import { RentalOrmEntity } from './infrastructure/orm/rental.orm-entity';
-import { RentalCalculationService } from './domain/services/rental-calculation.service';
-import { RentalModule } from './modules/rental.module';
+import { CarEntity } from './infrastructure/entities/car.entity.orm';
+import { CustomerEntity } from './infrastructure/entities/customer.entity.orm';
+import { RentalEntity } from './infrastructure/entities/rental.entity.orm';
+import { CarModule } from './modules/car.module';
+import { CustomerModule } from './modules/customer.module';
+import { QuotationModule } from './modules/quotation.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST || 'localhost',
-      port: Number(process.env.DB_PORT) || 5432,
+      port: parseInt(process.env.DB_PORT) || 5432,
       username: process.env.DB_USERNAME || 'your_username',
       password: process.env.DB_PASSWORD || 'your_password',
       database: process.env.DB_DATABASE || 'your_database',
-      entities: [ClientOrmEntity, CarOrmEntity, RentalOrmEntity],
-      synchronize: true, // Pour le développement uniquement
+      entities: [CarEntity, CustomerEntity, RentalEntity],
+      synchronize: true, // attention à la production, à utiliser avec précaution
+      logging: true,
     }),
-    DatabaseModule,
-    RentalModule,
+    QuotationModule,
+    CarModule,
+    CustomerModule,
   ],
 })
 export class AppModule {}
