@@ -1,0 +1,55 @@
+name: Nest Hexagonal Architecture CI
+
+# Triggers on push to develop/master and specific PR events
+on:
+  push:
+    branches:
+      - develop
+      - master # Triggers only on pushes to develop or master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review # Triggers when PR is ready for review
+
+jobs:
+  build-js:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: your_username
+          POSTGRES_PASSWORD: your_password
+          POSTGRES_DB: your_database
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    name: Build and check JS environment
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run strict compilation
+        run: npx tsc-strict
+
+      - name: Run tests e2e
+        run: npm run test:e2e
+        if: github.event_name != 'pull_request' || (github.event_name == 'pull_request' && (github.base_ref == 'develop' || github.base_ref == 'master'))
+
+      - name: Run tests
+        run: npm run test
