@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Car } from 'src/domain/entities/car.entity';
 import { CarNotFoundException } from 'src/domain/exceptions/car-not-found.exception';
@@ -6,7 +5,6 @@ import { CarRepository } from 'src/domain/repositories/car.repository';
 import { Repository } from 'typeorm';
 import { CarEntity } from '../entities/car.entity.orm';
 
-@Injectable()
 export class CarRepositoryImpl implements CarRepository {
   constructor(
     @InjectRepository(CarEntity)

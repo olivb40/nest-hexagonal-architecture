@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Customer } from 'src/domain/entities/customer.entity';
 import { CustomerNotFoundException } from 'src/domain/exceptions/customer-not-found.exception';
@@ -6,7 +5,6 @@ import { CustomerRepository } from 'src/domain/repositories/customer.repository'
 import { Repository } from 'typeorm';
 import { CustomerEntity } from '../entities/customer.entity.orm';
 
-@Injectable()
 export class CustomerRepositoryImpl implements CustomerRepository {
   constructor(
     @InjectRepository(CustomerEntity)

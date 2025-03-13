@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Rental } from 'src/domain/entities/rental.entity';
 import { RentalNotFoundException } from 'src/domain/exceptions/rental-not-found.exception copy';
@@ -6,7 +5,6 @@ import { RentalRepository } from 'src/domain/repositories/rental.repository';
 import { Repository } from 'typeorm';
 import { RentalEntity } from '../entities/rental.entity.orm';
 
-@Injectable()
 export class RentalRepositoryImpl implements RentalRepository {
   constructor(
     @InjectRepository(RentalEntity)
