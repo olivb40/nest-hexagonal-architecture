@@ -1,8 +1,4 @@
-export enum CarCategory {
-  ECONOMY = 'economy',
-  COMFORT = 'comfort',
-  LUXURY = 'luxury',
-}
+import { CarCategory } from '../enums/car-category.enum';
 
 export class Car {
   constructor(

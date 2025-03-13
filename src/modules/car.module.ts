@@ -15,6 +15,6 @@ import { CarRepositoryImpl } from 'src/infrastructure/repositories/car.repositor
     CarService,
   ],
   controllers: [CarController],
-  exports: ['CarRepository'],
+  exports: [CarService, 'CarRepository'],
 })
 export class CarModule {}

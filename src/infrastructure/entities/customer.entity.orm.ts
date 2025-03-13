@@ -1,9 +1,10 @@
-import { Customer, CustomerType } from 'src/domain/entities/customer.entity';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Customer } from 'src/domain/entities/customer.entity';
+import { CustomerType } from 'src/domain/enums/customer-type.enum';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'customers' })
 export class CustomerEntity implements Customer {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()

@@ -25,8 +25,9 @@ export class CarRepositoryImpl implements CarRepository {
     return this.repository.findOneBy({ id });
   }
 
-  async update(car: Partial<Car>): Promise<Car> {
-    return this.repository.save(car);
+  async update(id: number, car: Partial<Car>): Promise<Car> {
+    await this.repository.update(id, car);
+    return this.findOne(id);
   }
 
   async delete(id: number): Promise<void> {

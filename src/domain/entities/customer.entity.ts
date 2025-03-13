@@ -1,7 +1,4 @@
-export enum CustomerType {
-  INDIVIDUAL = 'individual',
-  PROFESSIONAL = 'professional',
-}
+import { CustomerType } from '../enums/customer-type.enum';
 
 export class Customer {
   constructor(
