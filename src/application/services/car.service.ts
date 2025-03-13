@@ -1,8 +1,11 @@
+import { Inject } from '@nestjs/common';
 import { Car } from 'src/domain/entities/car.entity';
 import { CarRepository } from 'src/domain/repositories/car.repository';
 
 export class CarService {
-  constructor(private readonly carRepository: CarRepository) {}
+  constructor(
+    @Inject('CarRepository') private readonly carRepository: CarRepository,
+  ) {}
 
   async create(car: Partial<Car>): Promise<Car> {
     return this.carRepository.create(car);
@@ -16,11 +19,12 @@ export class CarService {
     return this.carRepository.findOne(id);
   }
 
-  async update(car: Partial<Car>): Promise<Car> {
-    return this.carRepository.update(car);
+  async update(id: number, car: Partial<Car>): Promise<Car> {
+    await this.carRepository.update(id, car);
+    return this.findOne(id);
   }
 
   async delete(id: number): Promise<void> {
-    return this.carRepository.delete(id);
+    await this.carRepository.delete(id);
   }
 }

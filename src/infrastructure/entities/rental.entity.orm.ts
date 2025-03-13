@@ -1,13 +1,13 @@
-import { Car, CarCategory } from 'src/domain/entities/car.entity';
-import { Customer, CustomerType } from 'src/domain/entities/customer.entity';
+import { Car } from 'src/domain/entities/car.entity';
+import { Customer } from 'src/domain/entities/customer.entity';
 import { Rental } from 'src/domain/entities/rental.entity';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CarEntity } from './car.entity.orm';
 import { CustomerEntity } from './customer.entity.orm';
 
 @Entity({ name: 'rentals' })
 export class RentalEntity implements Rental {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ name: 'start_date', type: 'timestamptz' })

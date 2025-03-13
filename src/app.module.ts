@@ -18,7 +18,7 @@ import { QuotationModule } from './modules/quotation.module';
       database: process.env.DB_DATABASE || 'your_database',
       entities: [CarEntity, CustomerEntity, RentalEntity],
       synchronize: true, // attention à la production, à utiliser avec précaution
-      logging: true,
+      logging: false,
     }),
     QuotationModule,
     CarModule,
