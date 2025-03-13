@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Rental } from 'src/domain/entities/rental.entity';
+import { RentalNotFoundException } from 'src/domain/exceptions/rental-not-found.exception copy';
 import { RentalRepository } from 'src/domain/repositories/rental.repository';
 import { Repository } from 'typeorm';
 import { RentalEntity } from '../entities/rental.entity.orm';
@@ -21,12 +22,19 @@ export class RentalRepositoryImpl implements RentalRepository {
     return this.repository.find();
   }
 
-  async findOne(id: number): Promise<Rental | null> {
-    return this.repository.findOneBy({ id });
+  async findOne(id: number): Promise<Rental> {
+    const rental = await this.repository.findOne({ where: { id } });
+
+    if (!rental) {
+      throw new RentalNotFoundException(id);
+    }
+
+    return rental;
   }
 
-  async update(car: Partial<Rental>): Promise<Rental> {
-    return this.repository.save(car);
+  async update(id: number, car: Partial<Rental>): Promise<Rental> {
+    await this.repository.update(id, car);
+    return this.findOne(id);
   }
 
   async delete(id: number): Promise<void> {

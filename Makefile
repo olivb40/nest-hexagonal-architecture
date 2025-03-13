@@ -1,3 +1,6 @@
+#
+# DOCKER
+#
 PROJECT_NAME=app-hexa
 APP_SERVICE=app
 
@@ -22,3 +25,9 @@ docker-exec:
 docker-clean:
 	docker compose -p $(PROJECT_NAME) down --volumes --remove-orphans
 	docker system prune -f
+
+#
+# FORMAT & LINT
+#
+clean:
+	npm run lint

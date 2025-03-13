@@ -1,5 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { Car } from 'src/domain/entities/car.entity';
+import { CarNotFoundException } from 'src/domain/exceptions/car-not-found.exception';
 import { CarRepository } from 'src/domain/repositories/car.repository';
 
 export class CarService {
@@ -15,8 +16,14 @@ export class CarService {
     return this.carRepository.find();
   }
 
-  async findOne(id: number): Promise<Car | null> {
-    return this.carRepository.findOne(id);
+  async findOne(id: number): Promise<Car> {
+    const car = await this.carRepository.findOne(id);
+
+    if (!car) {
+      throw new CarNotFoundException(id);
+    }
+
+    return car;
   }
 
   async update(id: number, car: Partial<Car>): Promise<Car> {

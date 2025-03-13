@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Car } from 'src/domain/entities/car.entity';
+import { CarNotFoundException } from 'src/domain/exceptions/car-not-found.exception';
 import { CarRepository } from 'src/domain/repositories/car.repository';
 import { Repository } from 'typeorm';
 import { CarEntity } from '../entities/car.entity.orm';
@@ -21,8 +22,14 @@ export class CarRepositoryImpl implements CarRepository {
     return this.repository.find();
   }
 
-  async findOne(id: number): Promise<Car | null> {
-    return this.repository.findOneBy({ id });
+  async findOne(id: number): Promise<Car> {
+    const car = await this.repository.findOneBy({ id });
+
+    if (!car) {
+      throw new CarNotFoundException(id);
+    }
+
+    return car;
   }
 
   async update(id: number, car: Partial<Car>): Promise<Car> {
